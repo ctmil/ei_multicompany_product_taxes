@@ -119,8 +119,19 @@ class account_invoice_line(models.Model):
 				if product_tax:
 					return_value = [[6,0,[product_tax.tax_id.id]]]
 					vals['invoice_line_tax_ids'] = return_value	
-				product_account = self.env['product.taxes'].search([('product_id','=',product_id),\
+				product_account = self.env['product.accounts'].search([('product_id','=',product_id),\
 						('company_id','=',invoice.company_id.id),('type','=','payable')])
+				if product_account:
+					vals['account_id'] = product_account.id	
+			else:
+				invoice = self.env['account.invoice'].browse(invoice_id)
+				product_tax = self.env['product.taxes'].search([('product_id','=',product_id),\
+						('company_id','=',invoice.company_id.id),('type','=','sale')])
+				if product_tax:
+					return_value = [[6,0,[product_tax.tax_id.id]]]
+					vals['invoice_line_tax_ids'] = return_value	
+				product_account = self.env['product.accounts'].search([('product_id','=',product_id),\
+						('company_id','=',invoice.company_id.id),('type','=','receivable')])
 				if product_account:
 					vals['account_id'] = product_account.id	
 				
