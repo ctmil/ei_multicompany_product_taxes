@@ -175,5 +175,5 @@ class product_product(models.Model):
 class res_partner(models.Model):
 	_inherit = 'res.partner'
 
-	customer_account_id = fields.One2many(comodel_name='account.account',inverse_name='partner_id')	
-	supplier_account_id = fields.One2many(comodel_name='account.account',inverse_name='partner_id')	
+	customer_account_id = fields.One2many(comodel_name='partner.accounts',inverse_name='partner_id')	
+	supplier_account_id = fields.One2many(comodel_name='partner.accounts',inverse_name='partner_id')	

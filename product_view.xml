@@ -41,6 +41,18 @@
 		</field>
       </field>
     </record>
+
+    <record id="res_partner_accounts_form" model="ir.ui.view">
+      <field name="name">res.company.accounts</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+		<field name="title" position="after">
+			<field name="customer_account_id" />
+			<field name="supplier_account_id" />
+		</field>
+      </field>
+    </record>
     <!-- xpath expr="//form[@string='Supplier Information']/field[@name='pricelist_ids']/tree[@string='Pricelist']/field[@name='price']" -->
     <!-- record id="purchase_order_taxes" model="ir.ui.view">
       <field name="name">purchase.order.taxes</field>

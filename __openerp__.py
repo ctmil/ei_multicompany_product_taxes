@@ -25,7 +25,7 @@
     'version': '9.0.1.0.0',
     'category': 'project',
     'license': 'AGPL-3',
-    'depends': ['product','account','purchase','sale'],
+    'depends': ['base','product','account','purchase','sale'],
     'data': [
 	'product_view.xml',
 	'security/ir.model.access.csv',
