@@ -49,7 +49,7 @@
       <field name="arch" type="xml">
 		<field name="title" position="after">
 			<field name="customer_account_id">
-				<tree string="Cuentas contable del partner">
+				<tree string="Cuentas contable del partner" editable="bottom">
 					<field name="company_id" />
 					<field name="account_id" />
 					<field name="account_type" />
