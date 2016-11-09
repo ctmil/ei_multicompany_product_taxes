@@ -110,8 +110,9 @@ class account_invoice_line(models.Model):
 	def create(self,vals):
 		product_id = vals.get('product_id',False)
 		invoice_id = vals.get('invoice_id',False)
-		invoice_type = vals.get('type',False)
-		if product_id and invoice_id and invoice_type:
+		if product_id and invoice_id:
+			invoice = self.env['account.invoice'].browse(invoice_id)
+			invoice_type = invoice.type
 			if invoice_type in ['in_refund','in_invoice']:
 				invoice = self.env['account.invoice'].browse(invoice_id)
 				product_tax = self.env['product.taxes'].search([('product_id','=',product_id),\
@@ -124,6 +125,7 @@ class account_invoice_line(models.Model):
 				if product_account:
 					vals['account_id'] = product_account.id	
 			else:
+				import pdb;pdb.set_trace()
 				invoice = self.env['account.invoice'].browse(invoice_id)
 				product_tax = self.env['product.taxes'].search([('product_id','=',product_id),\
 						('company_id','=',invoice.company_id.id),('type','=','sale')])
