@@ -110,17 +110,17 @@ class sale_order_line(models.Model):
 			if restrictions:
 				for restriction in restrictions:
 					if restriction.action  == 'disable':
-						raise exceptions.ValidationError("Al cliente no se le puede facturar el producto seleccionado")
+						raise ValidationError("Al cliente no se le puede facturar el producto seleccionado")
 			restrictions = self.env['product.company.restrictions'].search([('company_id','=',order.company_id.id),\
 					('product_id','=',product_id)])
 			if restrictions:
 				for restriction in restrictions:
 					if restriction.action  == 'disable':
-						raise exceptions.ValidationError("No se puede facturar el producto por la empresa seleccionada")
+						raise ValidationError("No se puede facturar el producto por la empresa seleccionada")
 			restrictions = self.env['product.company.restrictions'].search([('company_id','=',order.company_id.id),\
 					('product_id','=',product_id),('action','=','enable')])
 			if not restrictions:
-				raise exceptions.ValidationError("No se puede facturar el producto por la empresa seleccionada")
+				raise ValidationError("No se puede facturar el producto por la empresa seleccionada")
 			# Busca los impuestos
 
 			product_tax = self.env['product.taxes'].search([('product_id','=',product_id),\
