@@ -31,6 +31,8 @@ class res_company(models.Model):
 	default_sale_tax_id = fields.Many2one('account.tax',string='Impuesto Default en Ventas')
 	default_sale_account_id = fields.Many2one('account.account',string='Cuenta por default para productos a vender')
 	default_purchase_account_id = fields.Many2one('account.account',string='Cuenta por default para productos a comprar')
+	default_customer_account_id = fields.Many2one('account.account',string='Cuenta por default para clientes')
+	default_supplier_account_id = fields.Many2one('account.account',string='Cuenta por default para proveedores')
 
 class product_taxes(models.Model):
         _name = 'product.taxes'
@@ -65,6 +67,17 @@ class product_accounts(models.Model):
 	company_id = fields.Many2one('res.company',string='Company')
 	account_id = fields.Many2one('account.account',string='Account')
 	account_type = fields.Selection([('receivable','A cobrar'),('payable','Por pagar')])
+
+class partner_accounts(models.Model):
+	_name = 'partner.accounts'
+	_description = 'Cuentas del partner'
+
+	name = fields.Char('Name')
+	partner_id = fields.Many2one('res.partner',string='Partner')
+	company_id = fields.Many2one('res.company',string='Company')
+	account_id = fields.Many2one('account.account',string='Account')
+	account_type = fields.Selection([('receivable','A cobrar'),('payable','Por pagar')])
+
 
 class purchase_order_line(models.Model):
 	_inherit = 'purchase.order.line'
@@ -157,4 +170,10 @@ class product_product(models.Model):
 					}
 				return_id = self.env['product.taxes'].create(tax_values)
 		return res
-		
+	
+
+class res_partner(models.Model):
+	_inherit = 'res.partner'
+
+	customer_account_id = fields.One2many(comodel_name='account.account',inverse_name='partner_id')	
+	supplier_account_id = fields.One2many(comodel_name='account.account',inverse_name='partner_id')	

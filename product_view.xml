@@ -36,6 +36,8 @@
 			<field name="default_sale_tax_id" domain="[('type_tax_use','=','sale')]"/>
 			<field name="default_purchase_account_id" />
 			<field name="default_sale_account_id" />
+			<field name="default_customer_account_id" />
+			<field name="default_supplier_account_id" />
 		</field>
       </field>
     </record>
