@@ -177,3 +177,26 @@ class res_partner(models.Model):
 
 	customer_account_id = fields.One2many(comodel_name='partner.accounts',inverse_name='partner_id')	
 	supplier_account_id = fields.One2many(comodel_name='partner.accounts',inverse_name='partner_id')	
+
+class account_invoice(models.Model):
+	_inherit = 'account.invoice'
+
+	@api.model
+	def create(self, vals):
+		company_id = vals.get('company_id',False)
+		partner_id = vals.get('partner_id',False)
+		invoice_type = vals.get('type',False)
+		if partner_id and invoice_type and company_id:
+			if invoice_type in ['in_refund','in_invoice']:
+				partner_account = self.env['partner.accounts'].search([('partner_id','=',product_id),\
+						('company_id','=',company_id),('account_type','=','payable')])
+				if partner_account:
+					vals['account_id'] = partner_account.account_id.id	
+			else:
+				partner_account = self.env['partner.accounts'].search([('partner_id','=',partner_id),\
+						('company_id','=',company_id),('account_type','=','receivable')])
+				if partner_account:
+					vals['account_id'] = partner_account.account_id.id	
+				
+                return super(account_invoice, self).create(vals)
+		
