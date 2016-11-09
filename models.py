@@ -116,24 +116,22 @@ class account_invoice_line(models.Model):
 			if invoice_type in ['in_refund','in_invoice']:
 				invoice = self.env['account.invoice'].browse(invoice_id)
 				product_tax = self.env['product.taxes'].search([('product_id','=',product_id),\
-						('company_id','=',invoice.company_id.id),('type','=','purchase')])
+						('company_id','=',invoice.company_id.id),('tax_type','=','purchase')])
 				if product_tax:
 					return_value = [[6,0,[product_tax.tax_id.id]]]
 					vals['invoice_line_tax_ids'] = return_value	
 				product_account = self.env['product.accounts'].search([('product_id','=',product_id),\
-						('company_id','=',invoice.company_id.id),('type','=','payable')])
+						('company_id','=',invoice.company_id.id),('account_type','=','payable')])
 				if product_account:
 					vals['account_id'] = product_account.id	
 			else:
-				import pdb;pdb.set_trace()
-				invoice = self.env['account.invoice'].browse(invoice_id)
 				product_tax = self.env['product.taxes'].search([('product_id','=',product_id),\
-						('company_id','=',invoice.company_id.id),('type','=','sale')])
+						('company_id','=',invoice.company_id.id),('tax_type','=','sale')])
 				if product_tax:
 					return_value = [[6,0,[product_tax.tax_id.id]]]
 					vals['invoice_line_tax_ids'] = return_value	
 				product_account = self.env['product.accounts'].search([('product_id','=',product_id),\
-						('company_id','=',invoice.company_id.id),('type','=','receivable')])
+						('company_id','=',invoice.company_id.id),('account_type','=','receivable')])
 				if product_account:
 					vals['account_id'] = product_account.id	
 				
