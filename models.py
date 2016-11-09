@@ -156,6 +156,7 @@ class product_product(models.Model):
 
 	product_taxes_ids = fields.One2many(comodel_name='product.taxes',inverse_name='product_id')
 	product_accounts_ids = fields.One2many(comodel_name='product.accounts',inverse_name='product_id')
+	product_company_restrictions_ids = fields.One2many(comodel_name='product.company.restrictions',inverse_name='product_id')
 
         @api.model
         def create(self, vals):
@@ -177,6 +178,16 @@ class res_partner(models.Model):
 
 	customer_account_id = fields.One2many(comodel_name='partner.accounts',inverse_name='partner_id')	
 	supplier_account_id = fields.One2many(comodel_name='partner.accounts',inverse_name='partner_id')	
+
+class product_company_restrictions(models.Model):
+	_name = 'product.company.restrictions'
+	_description = 'Product company restrictions'
+
+	name = fields.Char('Name')
+	product_id = fields.Many2one('product.product',string='Producto')
+	company_id = fields.Many2one('res.company',string='Empresa')
+	partner_id = fields.Many2one('res.partner',string='Partner')
+	action = fields.Selection([('enable','Permitir'),('disable','No permitir')])
 
 class account_invoice(models.Model):
 	_inherit = 'account.invoice'

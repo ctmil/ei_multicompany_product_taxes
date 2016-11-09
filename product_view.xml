@@ -7,7 +7,7 @@
       <field name="model">product.product</field>
       <field name="inherit_id" ref="product.product_normal_form_view"/>
       <field name="arch" type="xml">
-		<field name="default_code" position="after">
+		<field name="company_id" position="after">
 			<field name="product_taxes_ids" >
 				<tree string="Taxes" editable="bottom">
 					<field name="company_id" />
@@ -21,6 +21,13 @@
 					<field name="account_id" />
 					<field name="account_type" />
 				</tree>
+			</field>
+			<field name="product_company_restrictions_ids">
+				<tree string="Restricciones" editable="bottom">
+					<field name="company_id" />
+					<field name="partner_id" />
+					<field name="action" />
+				</field>
 			</field>
 		</field>
       </field>
