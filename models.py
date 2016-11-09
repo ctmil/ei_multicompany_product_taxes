@@ -133,7 +133,7 @@ class account_invoice_line(models.Model):
 				product_account = self.env['product.accounts'].search([('product_id','=',product_id),\
 						('company_id','=',invoice.company_id.id),('account_type','=','receivable')])
 				if product_account:
-					vals['account_id'] = product_account.id	
+					vals['account_id'] = product_account.account_id.id	
 				
                 return super(account_invoice_line, self).create(vals)
 		
