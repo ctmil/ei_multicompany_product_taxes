@@ -104,6 +104,25 @@ class sale_order_line(models.Model):
 		order_id = vals.get('order_id',False)
 		if product_id and order_id:
 			order = self.env['sale.order'].browse(order_id)
+			# Busca las restricciones
+			restrictions = self.env['product.company.restrictions'].search([('company_id','=',order.company_id.id),\
+					('product_id','=',product_id),('partner_id','=',order.partner_id.id)])
+			if restrictions:
+				for restriction in restrictions:
+					if restriction.action  == 'disable':
+						raise exceptions.ValidationError("Al cliente no se le puede facturar el producto seleccionado")
+			restrictions = self.env['product.company.restrictions'].search([('company_id','=',order.company_id.id),\
+					('product_id','=',product_id)])
+			if restrictions:
+				for restriction in restrictions:
+					if restriction.action  == 'disable':
+						raise exceptions.ValidationError("No se puede facturar el producto por la empresa seleccionada")
+			restrictions = self.env['product.company.restrictions'].search([('company_id','=',order.company_id.id),\
+					('product_id','=',product_id),('action','=','enable')])
+			if not restrictions:
+				raise exceptions.ValidationError("No se puede facturar el producto por la empresa seleccionada")
+			# Busca los impuestos
+
 			product_tax = self.env['product.taxes'].search([('product_id','=',product_id),\
 					('company_id','=',order.company_id.id),('tax_type','=','sale')])
 			if product_tax:
@@ -187,7 +206,7 @@ class product_company_restrictions(models.Model):
 	product_id = fields.Many2one('product.product',string='Producto')
 	company_id = fields.Many2one('res.company',string='Empresa')
 	partner_id = fields.Many2one('res.partner',string='Partner')
-	action = fields.Selection([('enable','Permitir'),('disable','No permitir')])
+	action = fields.Selection([('enable','Permitir'),('disable','No permitir')],default="enable")
 
 class account_invoice(models.Model):
 	_inherit = 'account.invoice'
@@ -210,4 +229,4 @@ class account_invoice(models.Model):
 					vals['account_id'] = partner_account.account_id.id	
 				
                 return super(account_invoice, self).create(vals)
-		
+	
