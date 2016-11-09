@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="product_product_taxes" model="ir.ui.view">
+      <field name="name">product.product.taxes</field>
+      <field name="model">product.product</field>
+      <field name="inherit_id" ref="product.product_normal_form_view"/>
+      <field name="arch" type="xml">
+		<field name="default_code" position="after">
+			<field name="product_taxes_ids" >
+				<tree string="Taxes" editable="bottom">
+					<field name="company_id" />
+					<field name="tax_id" />
+					<field name="tax_type" domain="[('type_tax_use','=','purchase')]"/>
+				</tree>
+			</field>
+			<field name="product_accounts_ids" >
+				<tree string="Accounts" editable="bottom">
+					<field name="company_id" />
+					<field name="account_id" />
+					<field name="account_type" />
+				</tree>
+			</field>
+		</field>
+      </field>
+    </record>
+
+    <record id="res_company_taxes" model="ir.ui.view">
+      <field name="name">res.company.taxes</field>
+      <field name="model">res.company</field>
+      <field name="inherit_id" ref="base.view_company_form"/>
+      <field name="arch" type="xml">
+		<field name="parent_id" position="after">
+			<field name="default_purchase_tax_id" domain="[('type_tax_use','=','purchase')]"/>
+			<field name="default_sale_tax_id" domain="[('type_tax_use','=','sale')]"/>
+			<field name="default_purchase_account_id" />
+			<field name="default_sale_account_id" />
+		</field>
+      </field>
+    </record>
+    <!-- xpath expr="//form[@string='Supplier Information']/field[@name='pricelist_ids']/tree[@string='Pricelist']/field[@name='price']" -->
+    <!-- record id="purchase_order_taxes" model="ir.ui.view">
+      <field name="name">purchase.order.taxes</field>
+      <field name="model">purchase.order</field>
+      <field name="inherit_id" ref="purchase.purchase_order_form"/>
+      <field name="arch" type="xml">
+		<xpath expr="//field[@name='order_line']/form/sheet/group/group/field[@name='taxes_id']" position="attributes">
+			<attribute name="readonly">1</attribute>
+		</xpath>
+      </field>
+    </record -->
+
+    <!-- record id="account_invoice_taxes" model="ir.ui.view">
+      <field name="name">account.invoice.taxes</field>
+      <field name="model">account.invoice</field>
+      <field name="inherit_id" ref="account.invoice_supplier_form"/>
+      <field name="arch" type="xml">
+		<xpath expr="//field[@name='invoice_line_tax_ids']" position="attributes">
+			<attribute name="readonly">1</attribute>
+		</xpath>
+      </field>
+    </record -->
+
+  </data>
+</openerp>
