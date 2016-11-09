@@ -48,8 +48,13 @@
       <field name="inherit_id" ref="base.view_partner_form"/>
       <field name="arch" type="xml">
 		<field name="title" position="after">
-			<field name="customer_account_id" />
-			<field name="supplier_account_id" />
+			<field name="customer_account_id">
+				<tree string="Cuentas contable del partner">
+					<field name="company_id" />
+					<field name="account_id" />
+					<field name="account_type" />
+				</tree>
+			</field>
 		</field>
       </field>
     </record>
